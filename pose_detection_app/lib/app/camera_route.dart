@@ -13,34 +13,7 @@ class _CameraRouteState extends State<CameraRoute> {
   CameraController controller;
   bool _cameraInitialized = false;
   CameraImage _savedImage;
-
-  @override
-  void initState() {
-    super.initState();
-    _initializeCamera();
-  }
-
-  void _initializeCamera() {
-    controller = CameraController(cameras[0], ResolutionPreset.max);
-
-    controller.initialize().then((_) async {
-      await controller.startImageStream((image) => _processImage(image));
-      setState(() {});
-    });
-  }
-
-  void _processImage(CameraImage image) async {
-    debugPrint(image.toString());
-    setState(() {
-      _savedImage = image;
-    });
-  }
-
-  @override
-  void dispose() {
-    controller?.dispose();
-    super.dispose();
-  }
+  var message = "hello";
 
   @override
   Widget build(BuildContext context) {
@@ -65,5 +38,32 @@ class _CameraRouteState extends State<CameraRoute> {
         ],
       ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeCamera();
+  }
+
+  void _initializeCamera() {
+    controller = CameraController(cameras[0], ResolutionPreset.max);
+
+    controller.initialize().then((_) async {
+      await controller.startImageStream((image) => _processImage(image));
+      setState(() {});
+    });
+  }
+
+  void _processImage(CameraImage image) async {
+    setState(() {
+      _savedImage = image;
+    });
+  }
+
+  @override
+  void dispose() {
+    controller?.dispose();
+    super.dispose();
   }
 }
