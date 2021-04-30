@@ -1,6 +1,5 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import '../main.dart';
 
@@ -13,6 +12,7 @@ class _CameraRouteState extends State<CameraRoute> {
   CameraController controller;
   bool _cameraInitialized = false;
   CameraImage _savedImage;
+  bool inProcess = false;
   var message = "hello";
 
   @override
@@ -56,9 +56,27 @@ class _CameraRouteState extends State<CameraRoute> {
   }
 
   void _processImage(CameraImage image) async {
-    setState(() {
-      _savedImage = image;
-    });
+    _savedImage = image;
+    if (!inProcess) {
+      inProcess = true;
+      debugPrint("Send planes");
+      String result =
+          await platform.invokeMethod("hello", _convertImage(image));
+      debugPrint(result);
+
+      inProcess = false;
+    }
+    setState(() {});
+  }
+
+  Map<String, dynamic> _convertImage(CameraImage image) {
+    debugPrint("image format: ${image.format.group}");
+    return {
+      "width": image.width,
+      "height": image.height,
+      "planes": image.planes.map((plane) => plane.bytes).toList(),
+      "bytes_per_row": image.planes[0].bytesPerRow
+    };
   }
 
   @override

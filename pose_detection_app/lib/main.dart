@@ -13,12 +13,5 @@ Future<void> main() async {
 
   cameras = await availableCameras();
 
-  var message = "hello";
-  Map<int, String> messages = {1: message + "1", 2: message + "2", 3: message + "3"};
-  debugPrint("Send: $messages");
-  Map<int, String> result = await platform.invokeMapMethod("hello", messages);
-  for (String response in result.values) {
-    debugPrint("Get: $response");
-  }
   runApp(PoseDetectionApp());
 }
