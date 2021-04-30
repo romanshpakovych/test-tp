@@ -14,6 +14,8 @@ class _CameraRouteState extends State<CameraRoute> {
   CameraImage _savedImage;
   bool inProcess = false;
   var message = "hello";
+  var time = 0;
+  var frames = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -59,9 +61,9 @@ class _CameraRouteState extends State<CameraRoute> {
     _savedImage = image;
     if (!inProcess) {
       inProcess = true;
-      debugPrint("Send planes");
+      debugPrint("Send planes ${DateTime.now().minute} : ${DateTime.now().second} : ${DateTime.now().millisecond}");
       String result =
-          await platform.invokeMethod("hello", _convertImage(image));
+          await platform.invokeMethod("hello", _convertImage(_savedImage));
       debugPrint(result);
 
       inProcess = false;

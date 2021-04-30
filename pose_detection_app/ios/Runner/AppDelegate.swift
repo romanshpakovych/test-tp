@@ -3,6 +3,7 @@ import Flutter
 
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate {
+    
   override func application(
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
@@ -24,16 +25,19 @@ import Flutter
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
     
-    func hello(result: FlutterResult, arguments: Any?){
+    func hello(result: @escaping FlutterResult, arguments: Any?){
         if (arguments == nil) {
             result("Are you there?")
         } else {
             let args = arguments as! Dictionary<String, Any>
             
-            let uiimage = getImage(args: args)
-            
-            result("uiimage is nil " + String(uiimage == nil))
-          //  result("a")
+            DispatchQueue.global(qos: .userInitiated).async {
+                let uiimage = self.getImage(args: args)
+
+                DispatchQueue.main.async {
+                    result("uiimage is nil " + String(uiimage == nil))
+                }
+            }
         }
     
     }
@@ -49,43 +53,42 @@ import Flutter
         let width = args["width"] as! Int
         let height = args["height"] as! Int
         let planes = args["planes"] as! Array<FlutterStandardTypedData>
-        let bytesPerRow = args["bytes_per_row"] as! Int
+        let bytesPerRaw = args["bytes_per_row"] as! Int
         
-    
-        let rgbaUint8 = [UInt8](planes[0].data)
-        let data = NSData(bytes: rgbaUint8, length: rgbaUint8.count)
-
-        let image = imageFromARGB32Bitmap(pixels: data, width: width, height: height, bytesPerRow: bytesPerRow)
+        let bgraUint8 = [UInt8](planes[0].data)
+       
+        let image = imageFromARGB32Bitmap(pixels: bgraUint8, width: width, height: height, bytesPerRow: bytesPerRaw)
     
         return image
     }
     
-    func imageFromARGB32Bitmap(pixels: NSData, width: Int, height: Int, bytesPerRow: Int) -> UIImage? {
+    func imageFromARGB32Bitmap(pixels: [UInt8], width: Int, height: Int, bytesPerRow: Int = 0) -> UIImage? {
         guard width > 0 && height > 0 else { return nil }
-     //   guard pixels.count == width * height else { return nil }
+  //      guard pixels.count == width * height else { return nil }
 
         let rgbColorSpace = CGColorSpaceCreateDeviceRGB()
         let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedFirst.rawValue)
         let bitsPerComponent = 8
         let bitsPerPixel = 32
         
-        /*
-        var data = pixels // Copy to mutable []
-         guard let providerRef = CGDataProvider(data: NSData(bytes: &data,
-                                length: data.count * MemoryLayout<NSData>.size)
+        
+        var data = pixels
+        /* guard let providerRef = CGDataProvider(data: NSData(bytes: &data,
+                                length: data.count * MemoryLayout<PixelData>.size)
             )
             else { return nil } */
         
-        guard let providerRef = CGDataProvider(data: pixels)
-        else { return nil }
+        guard let providerRef = CGDataProvider(data: NSData(bytes: &data,
+                               length: data.count)
+           )
+           else { return nil }
 
         guard let cgim = CGImage(
             width: width,
             height: height,
             bitsPerComponent: bitsPerComponent,
             bitsPerPixel: bitsPerPixel,
-        
-            //bytesPerRow: width * MemoryLayout<NSData>.size,
+           // bytesPerRow: width * MemoryLayout<PixelData>.size,
             bytesPerRow: bytesPerRow,
             space: rgbColorSpace,
             bitmapInfo: bitmapInfo,
