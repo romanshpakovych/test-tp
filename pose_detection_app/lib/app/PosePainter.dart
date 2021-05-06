@@ -1,43 +1,35 @@
-
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:pose_detection_app/app/entity/PoseEntity.dart';
 
 class PosePainter extends CustomPainter {
+  PoseEntity _poseEntity;
+
+  PosePainter(this._poseEntity);
 
   @override
   void paint(Canvas canvas, Size size) {
+    if (_poseEntity == null) return;
+
     var paint = Paint();
     paint.color = Colors.amber;
-    paint.strokeWidth = 2;
+    paint.strokeWidth = 6;
 
-    canvas.drawLine(
-      Offset(0, size.height / 3),
-      Offset(size.width, size.height / 3),
-      paint,
-    );
+    double xFraction = size.width / _poseEntity.height;
+    double yFraction = size.height / _poseEntity.width;
 
-    canvas.drawLine(
-      Offset(0, (size.height / 3) * 2),
-      Offset(size.width, (size.height / 3) * 2),
-      paint,
-    );
-
-    canvas.drawLine(
-      Offset(size.width / 3, 0),
-      Offset(size.width / 3, size.height),
-      paint,
-    );
-
-    canvas.drawLine(
-      Offset((size.width / 3) * 2, 0),
-      Offset((size.width / 3) * 2, size.height),
-      paint,
-    );
+    canvas.drawPoints(
+        PointMode.points,
+        _poseEntity.landmarks
+            .map((e) => Offset(e.coordinates.y*xFraction, e.coordinates.x*yFraction))
+            .toList()
+              ..add(Offset(size.width / 2, size.height / 2)),
+        paint);
   }
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return false;
+    return true;
   }
-
 }

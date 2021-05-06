@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:pose_detection_app/app/PosePainter.dart';
+import 'package:pose_detection_app/app/entity/PoseEntity.dart';
 
 import '../main.dart';
 
@@ -13,6 +16,7 @@ class _CameraRouteState extends State<CameraRoute> {
   CameraController controller;
   bool _cameraInitialized = false;
   CameraImage _savedImage;
+  PoseEntity pose;
   bool inProcess = false;
   var message = "hello";
   var time = 0;
@@ -20,22 +24,18 @@ class _CameraRouteState extends State<CameraRoute> {
 
   @override
   Widget build(BuildContext context) {
+    debugPrint("build with: $pose");
     return Scaffold(
       appBar: AppBar(
         title: Text("PoseDetectionApp"),
       ),
-      body: Stack(
-        children: [
-          Expanded(
-            child: (controller.value.isInitialized)
-                ? CameraPreview(controller)
-                : CircularProgressIndicator(),
-          ),
-          CustomPaint(
-            painter: PosePainter(),
-            child: Center(),
-          )
-        ],
+      body: Center(
+        child: CustomPaint(
+          foregroundPainter: PosePainter(pose),
+          child: (controller.value.isInitialized)
+              ? CameraPreview(controller)
+              : CircularProgressIndicator(),
+        ),
       ),
     );
   }
@@ -63,9 +63,16 @@ class _CameraRouteState extends State<CameraRoute> {
           await platform.invokeMethod("hello", _convertImage(_savedImage));
       debugPrint(
           "frame processed ${DateTime.now().minute}:${DateTime.now().second}:${DateTime.now().millisecond}");
-      debugPrint(result);
 
       inProcess = false;
+
+      if (result != null) debugPrint("json: ${jsonDecode(result)[0]}");
+
+      pose = PoseEntity.fromJson(jsonDecode(result)[0]);
+      pose.height = image.height;
+      pose.width = image.width;
+      debugPrint("pose is: $pose");
+      if(pose != null) setState(() {});
     }
   }
 

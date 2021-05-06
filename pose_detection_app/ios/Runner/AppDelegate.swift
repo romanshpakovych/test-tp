@@ -47,7 +47,7 @@ import MLKitVision
                 
         
                 DispatchQueue.main.async {
-                    result("result: \(positions)")
+                    result(positions)
                 }
             }
         }
