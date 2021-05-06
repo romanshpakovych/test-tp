@@ -1,5 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:pose_detection_app/app/PosePainter.dart';
 
 import '../main.dart';
 
@@ -23,19 +24,16 @@ class _CameraRouteState extends State<CameraRoute> {
       appBar: AppBar(
         title: Text("PoseDetectionApp"),
       ),
-      body: Column(
+      body: Stack(
         children: [
           Expanded(
             child: (controller.value.isInitialized)
                 ? CameraPreview(controller)
                 : CircularProgressIndicator(),
           ),
-          Container(
-            width: MediaQuery.of(context).size.width,
-            height: 60,
-            child: Center(
-              child: Text("detected data: none"),
-            ),
+          CustomPaint(
+            painter: PosePainter(),
+            child: Center(),
           )
         ],
       ),
