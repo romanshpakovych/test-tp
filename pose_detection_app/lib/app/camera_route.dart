@@ -49,7 +49,7 @@ class _CameraRouteState extends State<CameraRoute> {
   }
 
   void _initializeCamera() {
-    controller = CameraController(cameras[0], ResolutionPreset.max);
+    controller = CameraController(cameras[0], ResolutionPreset.high);
 
     controller.initialize().then((_) async {
       await controller.startImageStream((image) => _processImage(image));
@@ -61,14 +61,14 @@ class _CameraRouteState extends State<CameraRoute> {
     _savedImage = image;
     if (!inProcess) {
       inProcess = true;
-      debugPrint("Send planes ${DateTime.now().minute} : ${DateTime.now().second} : ${DateTime.now().millisecond}");
       String result =
           await platform.invokeMethod("hello", _convertImage(_savedImage));
+      debugPrint(
+          "frame processed ${DateTime.now().minute}:${DateTime.now().second}:${DateTime.now().millisecond}");
       debugPrint(result);
 
       inProcess = false;
     }
-    setState(() {});
   }
 
   Map<String, dynamic> _convertImage(CameraImage image) {

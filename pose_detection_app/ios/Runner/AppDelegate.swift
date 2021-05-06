@@ -1,5 +1,7 @@
 import UIKit
 import Flutter
+import MLKitPoseDetectionAccurate
+import MLKitVision
 
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate {
@@ -32,14 +34,23 @@ import Flutter
             let args = arguments as! Dictionary<String, Any>
             
             DispatchQueue.global(qos: .userInitiated).async {
-                let uiimage = self.getImage(args: args)
-
+                guard let uiimage = self.getImage(args: args)
+                else {
+                    DispatchQueue.main.async { result("uiimage is nil") }
+                    return
+                }
+                
+                guard let positions = PoseDetectionHelper.instance.processVisionImage(uiimage: uiimage) else {
+                    DispatchQueue.main.async { result("positions is nil") }
+                    return
+                }
+                
+        
                 DispatchQueue.main.async {
-                    result("uiimage is nil " + String(uiimage == nil))
+                    result("result: \(positions)")
                 }
             }
         }
-    
     }
     
     public struct PixelData {
