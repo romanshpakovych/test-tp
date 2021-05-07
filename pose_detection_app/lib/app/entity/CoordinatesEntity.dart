@@ -7,9 +7,9 @@ class CoordinatesEntity {
   CoordinatesEntity({this.x, this.y, this.z});
 
   CoordinatesEntity.fromJson(Map<String, dynamic> json) {
-    x = json['x'];
-    y = json['y'];
-    z = json['z'];
+    x = (json['x'] as num).toDouble();
+    y = (json['y'] as num).toDouble();
+    z = (json['z'] as num).toDouble();
   }
 
   Map<String, dynamic> toJson() {

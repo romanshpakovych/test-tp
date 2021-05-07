@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:pose_detection_app/app/PosePainter.dart';
 import 'package:pose_detection_app/app/entity/PoseEntity.dart';
 
@@ -24,7 +25,7 @@ class _CameraRouteState extends State<CameraRoute> {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint("build with: $pose");
+    "build with: $pose".log();
     return Scaffold(
       appBar: AppBar(
         title: Text("PoseDetectionApp"),
@@ -50,6 +51,7 @@ class _CameraRouteState extends State<CameraRoute> {
     controller = CameraController(cameras[0], ResolutionPreset.high);
 
     controller.initialize().then((_) async {
+      await controller.lockCaptureOrientation(DeviceOrientation.portraitUp);
       await controller.startImageStream((image) => _processImage(image));
       setState(() {});
     });
@@ -58,26 +60,32 @@ class _CameraRouteState extends State<CameraRoute> {
   void _processImage(CameraImage image) async {
     _savedImage = image;
     if (!inProcess) {
+      "start frame $frames".log();
+
       inProcess = true;
       String result =
           await platform.invokeMethod("hello", _convertImage(_savedImage));
-      debugPrint(
-          "frame processed ${DateTime.now().minute}:${DateTime.now().second}:${DateTime.now().millisecond}");
 
-      inProcess = false;
-
-      if (result != null) debugPrint("json: ${jsonDecode(result)[0]}");
-
-      pose = PoseEntity.fromJson(jsonDecode(result)[0]);
-      pose.height = image.height;
-      pose.width = image.width;
-      debugPrint("pose is: $pose");
-      if(pose != null) setState(() {});
+      "processed frame $frames".log();
+      try {
+        if (result != null) {
+          pose = PoseEntity.fromJson(jsonDecode(result)[0])
+            ..height = image.height
+            ..width = image.width;
+        } else {
+          pose = null;
+        }
+        "pose is $pose".log();
+        setState(() {});
+        ++frames;
+        inProcess = false;
+      } catch (e) {
+        e.toString().log();
+      }
     }
   }
 
   Map<String, dynamic> _convertImage(CameraImage image) {
-    debugPrint("image format: ${image.format.group}");
     return {
       "width": image.width,
       "height": image.height,

@@ -13,5 +13,20 @@ Future<void> main() async {
 
   cameras = await availableCameras();
 
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
   runApp(PoseDetectionApp());
 }
+
+extension LogString on String {
+  void log() {
+    debugPrint("${DateTime
+        .now()
+        .minute}:${DateTime
+        .now()
+        .second}:${DateTime
+        .now()
+        .millisecond}:: $this");
+  }
+}
+

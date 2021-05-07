@@ -14,6 +14,7 @@
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
 		B4DA9DEF7AA104776DEF9C5B /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 81918501BDFB29552DB4EAD0 /* Pods_Runner.framework */; };
+		E71E222F26452188009E35AD /* ImageHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E71E222E26452188009E35AD /* ImageHelper.swift */; };
 		E7BCD2B92643D44D00ED6430 /* PoseDetectionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7BCD2B82643D44D00ED6430 /* PoseDetectionHelper.swift */; };
 		E7BCD2BB2644195400ED6430 /* PoseEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7BCD2BA2644195400ED6430 /* PoseEntity.swift */; };
 		E7BCD2BD2644196400ED6430 /* LandmarkEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7BCD2BC2644196400ED6430 /* LandmarkEntity.swift */; };
@@ -51,6 +52,7 @@
 		97C147001CF9000F007C117D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		97C147021CF9000F007C117D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B7CA12AFD616BA1A24B5F66B /* Pods-Runner.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug.xcconfig"; sourceTree = "<group>"; };
+		E71E222E26452188009E35AD /* ImageHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageHelper.swift; sourceTree = "<group>"; };
 		E7BCD2B82643D44D00ED6430 /* PoseDetectionHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseDetectionHelper.swift; sourceTree = "<group>"; };
 		E7BCD2BA2644195400ED6430 /* PoseEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseEntity.swift; sourceTree = "<group>"; };
 		E7BCD2BC2644196400ED6430 /* LandmarkEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandmarkEntity.swift; sourceTree = "<group>"; };
@@ -136,10 +138,11 @@
 		E7BCD2B72643D42C00ED6430 /* Helper */ = {
 			isa = PBXGroup;
 			children = (
-				E7BCD2B82643D44D00ED6430 /* PoseDetectionHelper.swift */,
 				E7BCD2BA2644195400ED6430 /* PoseEntity.swift */,
 				E7BCD2BC2644196400ED6430 /* LandmarkEntity.swift */,
 				E7BCD2BE2644197A00ED6430 /* CoordinatesEntity.swift */,
+				E7BCD2B82643D44D00ED6430 /* PoseDetectionHelper.swift */,
+				E71E222E26452188009E35AD /* ImageHelper.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -333,6 +336,7 @@
 				E7BCD2BD2644196400ED6430 /* LandmarkEntity.swift in Sources */,
 				E7BCD2B92643D44D00ED6430 /* PoseDetectionHelper.swift in Sources */,
 				E7BCD2BB2644195400ED6430 /* PoseEntity.swift in Sources */,
+				E71E222F26452188009E35AD /* ImageHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

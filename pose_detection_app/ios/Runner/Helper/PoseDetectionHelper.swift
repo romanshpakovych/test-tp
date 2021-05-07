@@ -38,10 +38,6 @@ class PoseDetectionHelper {
         }
         
         
-//        results[0].landmarks[0].position
-//        results[0].landmarks[0].inFrameLikelihood
-//        results[0].landmarks[0].type.rawValue
-        
         let result: Array<PoseEntity> = results.map{(pose: Pose) -> PoseEntity in
             
             return PoseEntity(landmarks: pose.landmarks.map{ (poseLandmark: PoseLandmark) -> LandmarkEntity in
