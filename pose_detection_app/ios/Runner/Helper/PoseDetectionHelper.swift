@@ -7,15 +7,29 @@
 
 import Foundation
 import MLKitPoseDetectionAccurate
+import MLKitPoseDetection
 import MLKitVision
 
 class PoseDetectionHelper {
     static let instance = PoseDetectionHelper()
     
-    let poseDetector: PoseDetector
+    var poseDetector: PoseDetector? = nil
+    
+    var isAccurate = false
     
     private init(){
-        let options = AccuratePoseDetectorOptions()
+        self.setup(accurate: false)
+    }
+    
+    func setup(accurate: Bool) {
+        var options: CommonPoseDetectorOptions
+        if (accurate) {
+            options = AccuratePoseDetectorOptions()
+        } else {
+            options = PoseDetectorOptions()
+        }
+        isAccurate = accurate
+        
         options.detectorMode = .stream
         poseDetector = PoseDetector.poseDetector(options: options)
     }
@@ -26,7 +40,7 @@ class PoseDetectionHelper {
         
         var results: [Pose]
         do {
-            results = try poseDetector.results(in: visionImage)
+            results = try poseDetector!.results(in: visionImage)
         } catch let error {
             print("Failed to detect pose with error: \(error.localizedDescription).")
             return nil
@@ -36,7 +50,6 @@ class PoseDetectionHelper {
             print("Pose detector returned no results.")
             return nil
         }
-        
         
         let result: Array<PoseEntity> = results.map{(pose: Pose) -> PoseEntity in
             
@@ -55,8 +68,9 @@ class PoseDetectionHelper {
         } catch {
             return nil
         }
-    
+        
         let jsonString = String(data: json, encoding: .utf8)
+        
         return jsonString
     }
 }

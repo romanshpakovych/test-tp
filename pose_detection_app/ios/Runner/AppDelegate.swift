@@ -1,6 +1,5 @@
 import UIKit
 import Flutter
-import MLKitPoseDetectionAccurate
 import MLKitVision
 
 @UIApplicationMain
@@ -31,7 +30,14 @@ import MLKitVision
         if (arguments == nil) {
             result("Are you there?")
         } else {
+            let poseDetectionHelper = PoseDetectionHelper.instance
+            
             let args = arguments as! Dictionary<String, Any>
+            let isAccurate = args["isAccurate"] as! Bool
+            
+            if (poseDetectionHelper.isAccurate != isAccurate) {
+                poseDetectionHelper.setup(accurate: isAccurate)
+            }
             
             DispatchQueue.global(qos: .userInitiated).async {
                 guard let uiimage = ImageHelper.getImage(args: args)
@@ -40,7 +46,7 @@ import MLKitVision
                     return
                 }
                 
-                guard let positions = PoseDetectionHelper.instance.processVisionImage(uiimage: uiimage) else {
+                guard let positions = poseDetectionHelper.processVisionImage(uiimage: uiimage) else {
                     DispatchQueue.main.async { result(nil) }
                     return
                 }

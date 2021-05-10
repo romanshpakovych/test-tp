@@ -26,3 +26,6 @@ dev_dependencies:
 flutter:
 
   uses-material-design: true
+
+  assets:
+    - assets/image/ic_swap_camera.png

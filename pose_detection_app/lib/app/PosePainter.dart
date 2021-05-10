@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -44,14 +45,13 @@ class PosePainter extends CustomPainter {
   static var pointPaint = Paint()
     ..color = Colors.amber
     ..strokeCap = StrokeCap.round
-    ..strokeWidth = 2
     ..strokeWidth = 4;
 
   static var linePaint = Paint()
     ..color = Colors.white
     ..strokeCap = StrokeCap.round
     ..strokeWidth = 2;
-  
+
   PoseEntity _poseEntity;
 
   PosePainter(this._poseEntity);
@@ -66,21 +66,45 @@ class PosePainter extends CustomPainter {
     joins.forEach((element) {
       var from = _poseEntity.landmarks[element.a.name].coordinates;
       var to = _poseEntity.landmarks[element.b.name].coordinates;
-      canvas.drawLine(Offset(from.x * xFraction, from.y * yFraction),
-          Offset(to.x * xFraction, to.y * yFraction), linePaint);
+      canvas.drawLine(
+          Offset((from.x * xFraction).validate(size.width),
+              (from.y * yFraction).validate(size.height)),
+          Offset((to.x * xFraction).validate(size.width),
+              (to.y * yFraction).validate(size.height)),
+          linePaint);
     });
 
-    canvas.drawPoints(
-        PointMode.points,
-        _poseEntity.landmarks.values
-            .map((e) => Offset(
-                e.coordinates.x * xFraction, e.coordinates.y * yFraction))
-            .toList(),
-        pointPaint);
+    var leftPoints = _poseEntity.landmarks.values
+        .where((element) => Landmark.fromString(element.type).side == 1);
+    var rightPoints = _poseEntity.landmarks.values
+        .where((element) => Landmark.fromString(element.type).side == 0);
+    var middlePoints = _poseEntity.landmarks.values
+        .where((element) => Landmark.fromString(element.type).side == -1);
+
+    Function drawPoints = (Iterable points, Color color) {
+      canvas.drawPoints(
+          PointMode.points,
+          points
+              .map((e) => Offset(
+                  ((e.coordinates.x * xFraction) as double)
+                      .validate(size.width),
+                  ((e.coordinates.y * yFraction) as double)
+                      .validate(size.height)))
+              .toList(),
+          pointPaint..color = color);
+    };
+
+    drawPoints(leftPoints, Colors.lightBlue);
+    drawPoints(rightPoints, Colors.orange);
+    drawPoints(middlePoints, Colors.white);
   }
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
     return true;
   }
+}
+
+extension Adduction on double {
+  double validate(double maximum) => max(min(this, maximum), 0);
 }

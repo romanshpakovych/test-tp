@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pose_detection_app/app/PosePainter.dart';
 import 'package:pose_detection_app/app/entity/PoseEntity.dart';
+import 'package:pose_detection_app/app/widgets/RoundButton.dart';
 
 import '../main.dart';
 
@@ -22,6 +23,16 @@ class _CameraRouteState extends State<CameraRoute> {
   var message = "hello";
   var time = 0;
   var frames = 0;
+  var fps = 0;
+  var fpsString = "";
+  var isAccurate = false;
+  var camera = 0;
+  static var resolutions = {
+    "480p": ResolutionPreset.medium,
+    "720p": ResolutionPreset.high,
+    "1080p": ResolutionPreset.veryHigh
+  };
+  var currentResolution = "480p";
 
   @override
   Widget build(BuildContext context) {
@@ -31,11 +42,92 @@ class _CameraRouteState extends State<CameraRoute> {
         title: Text("PoseDetectionApp"),
       ),
       body: Center(
-        child: CustomPaint(
-          foregroundPainter: PosePainter(pose),
-          child: (controller.value.isInitialized)
-              ? CameraPreview(controller)
-              : CircularProgressIndicator(),
+        child: Column(
+          children: [
+            Flexible(
+              child: Center(
+                child: CustomPaint(
+                  foregroundPainter: PosePainter(pose),
+                  child: (controller.value.isInitialized)
+                      ? Stack(
+                          children: [
+                            CameraPreview(controller),
+                            Text(
+                              "fps: $fpsString",
+                              style: TextStyle(
+                                color: Colors.red,
+                                fontSize: 20.0,
+                              ),
+                            ),
+                          ],
+                        )
+                      : CircularProgressIndicator(),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Is accurate",
+                        style: TextStyle(
+                          fontSize: 20.0,
+                          color: Colors.black38,
+                        ),
+                      ),
+                      Switch(
+                          value: isAccurate,
+                          onChanged: (bool) {
+                            isAccurate = bool;
+                          }),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Resolution",
+                        style: TextStyle(
+                          fontSize: 20.0,
+                          color: Colors.black38,
+                        ),
+                      ),
+                      DropdownButton(
+                          value: currentResolution,
+                          items: resolutions.keys
+                              .map((value) => DropdownMenuItem(
+                                  value: value, child: Text(value)))
+                              .toList(),
+                          onChanged: (String newValue) {
+                            setState(() {
+                              currentResolution = newValue;
+                              _initializeCamera();
+                            });
+                          })
+                    ],
+                  ),
+                  Center(
+                    child:
+                        RoundIconButton("assets/image/ic_swap_camera.png", () {
+                      setState(() {
+                        if (camera == 0) {
+                          camera = 1;
+                        } else {
+                          camera = 0;
+                        }
+                        "pressed".log();
+                        _initializeCamera();
+                      });
+                    }),
+                  )
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -48,7 +140,8 @@ class _CameraRouteState extends State<CameraRoute> {
   }
 
   void _initializeCamera() {
-    controller = CameraController(cameras[0], ResolutionPreset.high);
+    controller =
+        CameraController(cameras[camera], resolutions[currentResolution]);
 
     controller.initialize().then((_) async {
       await controller.lockCaptureOrientation(DeviceOrientation.portraitUp);
@@ -60,11 +153,21 @@ class _CameraRouteState extends State<CameraRoute> {
   void _processImage(CameraImage image) async {
     _savedImage = image;
     if (!inProcess) {
+      ++fps;
+      if (time == 0) time = DateTime.now().millisecondsSinceEpoch;
+      if (DateTime.now().millisecondsSinceEpoch - time >= 1000) {
+        fpsString = fps.toString();
+        fps = 0;
+        time = 0;
+      }
+
       "start frame $frames".log();
 
       inProcess = true;
-      String result =
-          await platform.invokeMethod("hello", _convertImage(_savedImage));
+      String result = await platform.invokeMethod(
+          "hello",
+          _convertImage(_savedImage)
+            ..putIfAbsent("isAccurate", () => isAccurate));
 
       "processed frame $frames".log();
       try {

@@ -8,6 +8,9 @@ PODS:
     - PromisesObjC (~> 1.2)
   - GoogleMLKit/MLKitCore (2.1.0):
     - MLKitCommon (~> 2.1.0)
+  - GoogleMLKit/PoseDetection (2.1.0):
+    - GoogleMLKit/MLKitCore
+    - MLKitPoseDetection (~> 1.0.0-beta3)
   - GoogleMLKit/PoseDetectionAccurate (2.1.0):
     - GoogleMLKit/MLKitCore
     - MLKitPoseDetectionAccurate (~> 1.0.0-beta3)
@@ -41,6 +44,10 @@ PODS:
     - GoogleUtilitiesComponents (~> 1.0)
     - GTMSessionFetcher/Core (~> 1.1)
     - Protobuf (~> 3.12)
+  - MLKitPoseDetection (1.0.0-beta3):
+    - MLKitCommon (~> 2.1)
+    - MLKitPoseDetectionCommon (= 1.0.0-beta3)
+    - MLKitXenoCommon (= 1.0.0-beta3)
   - MLKitPoseDetectionAccurate (1.0.0-beta3):
     - MLKitCommon (~> 2.1)
     - MLKitPoseDetectionCommon (= 1.0.0-beta3)
@@ -68,6 +75,7 @@ PODS:
 DEPENDENCIES:
   - camera (from `.symlinks/plugins/camera/ios`)
   - Flutter (from `Flutter`)
+  - GoogleMLKit/PoseDetection
   - GoogleMLKit/PoseDetectionAccurate
 
 SPEC REPOS:
@@ -79,6 +87,7 @@ SPEC REPOS:
     - GoogleUtilitiesComponents
     - GTMSessionFetcher
     - MLKitCommon
+    - MLKitPoseDetection
     - MLKitPoseDetectionAccurate
     - MLKitPoseDetectionCommon
     - MLKitVision
@@ -103,6 +112,7 @@ SPEC CHECKSUMS:
   GoogleUtilitiesComponents: a69c0b3b369ba443e988141e75ef49d9010b1c80
   GTMSessionFetcher: b3503b20a988c4e20cc189aa798fd18220133f52
   MLKitCommon: 9ed187a042139d51c0d8bf6a8301bb20b375c576
+  MLKitPoseDetection: a2ca2959c88267f9edf5baad954b40e13f651220
   MLKitPoseDetectionAccurate: 4f64ff60f0a1285b5c8950bd8fdd3226937df96c
   MLKitPoseDetectionCommon: 6184de679b584083113968b464f0f998a147af72
   MLKitVision: 51385878c9100024478971856510f9271ff555b5
@@ -111,6 +121,6 @@ SPEC CHECKSUMS:
   PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
   Protobuf: adb85cd18a15bd1a777c158af9fd6e612a0e6d69
 
-PODFILE CHECKSUM: 94a02596bb56070386caa2b2e2e28e1e70825de2
+PODFILE CHECKSUM: f14a7bbac191202e67c3d93f19d6c2a8c20322a6
 
 COCOAPODS: 1.9.3
