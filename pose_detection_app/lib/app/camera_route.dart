@@ -53,7 +53,7 @@ class _CameraRouteState extends State<CameraRoute> {
                           children: [
                             CameraPreview(controller),
                             Text(
-                              "fps: $fpsString",
+                              "processed-fps: $fpsString",
                               style: TextStyle(
                                 color: Colors.red,
                                 fontSize: 20.0,
@@ -140,6 +140,7 @@ class _CameraRouteState extends State<CameraRoute> {
   }
 
   void _initializeCamera() {
+    controller?.stopImageStream();
     controller =
         CameraController(cameras[camera], resolutions[currentResolution]);
 
