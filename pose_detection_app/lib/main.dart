@@ -18,6 +18,7 @@ Future<void> main() async {
   runApp(PoseDetectionApp());
 }
 
+//Debugging
 extension LogString on String {
   void log() {
     debugPrint("${DateTime

@@ -15,18 +15,18 @@ import MLKitVision
     
     platformChannel.setMethodCallHandler({
         [weak self] (call: FlutterMethodCall, result: @escaping FlutterResult) -> Void in
-        guard call.method == "hello" else {
+        guard call.method == "processFrame" else {
             result(FlutterMethodNotImplemented)
             return
         }
         
-        self?.hello(result: result, arguments: call.arguments)
+        self?.processFrame(result: result, arguments: call.arguments)
     })
     GeneratedPluginRegistrant.register(with: self)
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
     
-    func hello(result: @escaping FlutterResult, arguments: Any?){
+    func processFrame(result: @escaping FlutterResult, arguments: Any?){
         if (arguments == nil) {
             result("Are you there?")
         } else {
@@ -46,12 +46,8 @@ import MLKitVision
                     return
                 }
                 
-                guard let positions = poseDetectionHelper.processVisionImage(uiimage: uiimage) else {
-                    DispatchQueue.main.async { result(nil) }
-                    return
-                }
+                let positions = poseDetectionHelper.processVisionImage(uiimage: uiimage)
                 
-        
                 DispatchQueue.main.async {
                     result(positions)
                 }

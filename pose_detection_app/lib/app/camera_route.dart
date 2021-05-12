@@ -9,6 +9,12 @@ import 'package:pose_detection_app/app/widgets/RoundButton.dart';
 
 import '../main.dart';
 
+const resolutions = {
+  "480p": ResolutionPreset.medium,
+  "720p": ResolutionPreset.high,
+  "1080p": ResolutionPreset.veryHigh
+};
+
 class CameraRoute extends StatefulWidget {
   @override
   _CameraRouteState createState() => _CameraRouteState();
@@ -16,22 +22,16 @@ class CameraRoute extends StatefulWidget {
 
 class _CameraRouteState extends State<CameraRoute> {
   CameraController controller;
-  bool _cameraInitialized = false;
   CameraImage _savedImage;
   PoseEntity pose;
   bool inProcess = false;
   var message = "hello";
   var time = 0;
   var frames = 0;
-  var fps = 0;
-  var fpsString = "";
+  var processedFramesCounter = 0;
+  var processedFps = "";
   var isAccurate = false;
   var camera = 0;
-  static var resolutions = {
-    "480p": ResolutionPreset.medium,
-    "720p": ResolutionPreset.high,
-    "1080p": ResolutionPreset.veryHigh
-  };
   var currentResolution = "480p";
 
   @override
@@ -53,7 +53,7 @@ class _CameraRouteState extends State<CameraRoute> {
                           children: [
                             CameraPreview(controller),
                             Text(
-                              "processed-fps: $fpsString",
+                              "processed-fps: $processedFps",
                               style: TextStyle(
                                 color: Colors.red,
                                 fontSize: 20.0,
@@ -154,23 +154,23 @@ class _CameraRouteState extends State<CameraRoute> {
   void _processImage(CameraImage image) async {
     _savedImage = image;
     if (!inProcess) {
-      ++fps;
+      inProcess = true;
+
+      //Calculate processed frames per second
+      ++processedFramesCounter;
       if (time == 0) time = DateTime.now().millisecondsSinceEpoch;
       if (DateTime.now().millisecondsSinceEpoch - time >= 1000) {
-        fpsString = fps.toString();
-        fps = 0;
+        processedFps = processedFramesCounter.toString();
+        processedFramesCounter = 0;
         time = 0;
       }
 
-      "start frame $frames".log();
-
-      inProcess = true;
+      //Invoke Plugin native method
       String result = await platform.invokeMethod(
-          "hello",
+          "processFrame",
           _convertImage(_savedImage)
             ..putIfAbsent("isAccurate", () => isAccurate));
 
-      "processed frame $frames".log();
       try {
         if (result != null) {
           pose = PoseEntity.fromJson(jsonDecode(result)[0])
@@ -179,7 +179,6 @@ class _CameraRouteState extends State<CameraRoute> {
         } else {
           pose = null;
         }
-        "pose is $pose".log();
         setState(() {});
         ++frames;
         inProcess = false;

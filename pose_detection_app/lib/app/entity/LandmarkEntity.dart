@@ -1,48 +1,49 @@
 import 'package:pose_detection_app/app/entity/CoordinatesEntity.dart';
 
+enum LandmarkSide {
+  left, right, middle
+}
+
 class Landmark {
   final String name;
   final int id;
-  /*1 - left
-   0 - right
-   -1 - middle*/
-  final int side;
+  final LandmarkSide side;
 
   const Landmark._internal(this.name, this.id, this.side);
 
-  static const NOSE = const Landmark._internal("Nose", 0, -1);
-  static const LEFT_EYE_INNER = const Landmark._internal("LeftEyeInner", 1, 1);
-  static const LEFT_EYE = const Landmark._internal("LeftEye", 2, 1);
-  static const LEFT_EYE_OUTER = const Landmark._internal("LeftEyeOuter", 3, 1);
-  static const RIGHT_EYE_INNER = const Landmark._internal("RightEyeInner", 4, 0);
-  static const RIGHT_EYE = const Landmark._internal("RightEye", 5, 0);
-  static const RIGHT_EYE_OUTER = const Landmark._internal("RightEyeOuter", 6, 0);
-  static const LEFT_EAR = const Landmark._internal("LeftEar", 7, 1);
-  static const RIGHT_EAR = const Landmark._internal("RightEar", 8, 0);
-  static const LEFT_MOUTH = const Landmark._internal("MouthLeft", 9, 1);
-  static const RIGHT_MOUTH = const Landmark._internal("MouthRight", 10, 0);
-  static const LEFT_SHOULDER = const Landmark._internal("LeftShoulder", 11, 1);
-  static const RIGHT_SHOULDER = const Landmark._internal("RightShoulder", 12, 0);
-  static const LEFT_ELBOW = const Landmark._internal("LeftElbow", 13, 1);
-  static const RIGHT_ELBOW = const Landmark._internal("RightElbow", 14, 0);
-  static const LEFT_WRIST = const Landmark._internal("LeftWrist", 15, 1);
-  static const RIGHT_WRIST = const Landmark._internal("RightWrist", 16, 0);
-  static const LEFT_PINKY = const Landmark._internal("LeftPinkyFinger", 17, 1);
-  static const RIGHT_PINKY = const Landmark._internal("RightPinkyFinger", 18, 0);
-  static const LEFT_INDEX = const Landmark._internal("LeftIndexFinger", 19, 1);
-  static const RIGHT_INDEX = const Landmark._internal("RightIndexFinger", 20, 0);
-  static const LEFT_THUMB = const Landmark._internal("LeftThumb", 21, 1);
-  static const RIGHT_THUMB = const Landmark._internal("RightThumb", 22, 0);
-  static const LEFT_HIP = const Landmark._internal("LeftHip", 23, 1);
-  static const RIGHT_HIP = const Landmark._internal("RightHip", 24, 0);
-  static const LEFT_KNEE = const Landmark._internal("LeftKnee", 25, 1);
-  static const RIGHT_KNEE = const Landmark._internal("RightKnee", 26, 0);
-  static const LEFT_ANKLE = const Landmark._internal("LeftAnkle", 27, 1);
-  static const RIGHT_ANKLE = const Landmark._internal("RightAnkle", 28, 0);
-  static const LEFT_HEEL = const Landmark._internal("LeftHeel", 29, 1);
-  static const RIGHT_HEEL = const Landmark._internal("RightHeel", 30, 0);
-  static const LEFT_FOOT_INDEX = const Landmark._internal("LeftToe", 31, 1);
-  static const RIGHT_FOOT_INDEX = const Landmark._internal("RightToe", 32, 0);
+  static const NOSE = const Landmark._internal("Nose", 0, LandmarkSide.middle);
+  static const LEFT_EYE_INNER = const Landmark._internal("LeftEyeInner", 1, LandmarkSide.left);
+  static const LEFT_EYE = const Landmark._internal("LeftEye", 2, LandmarkSide.left);
+  static const LEFT_EYE_OUTER = const Landmark._internal("LeftEyeOuter", 3, LandmarkSide.left);
+  static const RIGHT_EYE_INNER = const Landmark._internal("RightEyeInner", 4, LandmarkSide.right);
+  static const RIGHT_EYE = const Landmark._internal("RightEye", 5, LandmarkSide.right);
+  static const RIGHT_EYE_OUTER = const Landmark._internal("RightEyeOuter", 6, LandmarkSide.right);
+  static const LEFT_EAR = const Landmark._internal("LeftEar", 7, LandmarkSide.left);
+  static const RIGHT_EAR = const Landmark._internal("RightEar", 8, LandmarkSide.right);
+  static const LEFT_MOUTH = const Landmark._internal("MouthLeft", 9, LandmarkSide.left);
+  static const RIGHT_MOUTH = const Landmark._internal("MouthRight", 10, LandmarkSide.right);
+  static const LEFT_SHOULDER = const Landmark._internal("LeftShoulder", 11, LandmarkSide.left);
+  static const RIGHT_SHOULDER = const Landmark._internal("RightShoulder", 12, LandmarkSide.right);
+  static const LEFT_ELBOW = const Landmark._internal("LeftElbow", 13, LandmarkSide.left);
+  static const RIGHT_ELBOW = const Landmark._internal("RightElbow", 14, LandmarkSide.right);
+  static const LEFT_WRIST = const Landmark._internal("LeftWrist", 15, LandmarkSide.left);
+  static const RIGHT_WRIST = const Landmark._internal("RightWrist", 16, LandmarkSide.right);
+  static const LEFT_PINKY = const Landmark._internal("LeftPinkyFinger", 17, LandmarkSide.left);
+  static const RIGHT_PINKY = const Landmark._internal("RightPinkyFinger", 18, LandmarkSide.right);
+  static const LEFT_INDEX = const Landmark._internal("LeftIndexFinger", 19, LandmarkSide.left);
+  static const RIGHT_INDEX = const Landmark._internal("RightIndexFinger", 20, LandmarkSide.right);
+  static const LEFT_THUMB = const Landmark._internal("LeftThumb", 21, LandmarkSide.left);
+  static const RIGHT_THUMB = const Landmark._internal("RightThumb", 22, LandmarkSide.right);
+  static const LEFT_HIP = const Landmark._internal("LeftHip", 23, LandmarkSide.left);
+  static const RIGHT_HIP = const Landmark._internal("RightHip", 24, LandmarkSide.right);
+  static const LEFT_KNEE = const Landmark._internal("LeftKnee", 25, LandmarkSide.left);
+  static const RIGHT_KNEE = const Landmark._internal("RightKnee", 26, LandmarkSide.right);
+  static const LEFT_ANKLE = const Landmark._internal("LeftAnkle", 27, LandmarkSide.left);
+  static const RIGHT_ANKLE = const Landmark._internal("RightAnkle", 28, LandmarkSide.right);
+  static const LEFT_HEEL = const Landmark._internal("LeftHeel", 29, LandmarkSide.left);
+  static const RIGHT_HEEL = const Landmark._internal("RightHeel", 30, LandmarkSide.right);
+  static const LEFT_FOOT_INDEX = const Landmark._internal("LeftToe", 31, LandmarkSide.left);
+  static const RIGHT_FOOT_INDEX = const Landmark._internal("RightToe", 32, LandmarkSide.right);
 
   static Landmark fromString(String value) {
     return [
@@ -96,15 +97,5 @@ class LandmarksEntity {
     coordinates = json['coordinates'] != null
         ? new CoordinatesEntity.fromJson(json['coordinates'])
         : null;
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['likelihood'] = this.likelihood;
-    data['type'] = this.type;
-    if (this.coordinates != null) {
-      data['coordinates'] = this.coordinates.toJson();
-    }
-    return data;
   }
 }

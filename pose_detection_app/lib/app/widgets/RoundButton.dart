@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class RoundIconButton extends StatelessWidget {
-  Function onClick;
-  String pngAssetPathActive;
+  final Function onClick;
+  final String pngAssetPathActive;
 
   RoundIconButton(this.pngAssetPathActive, this.onClick);
 

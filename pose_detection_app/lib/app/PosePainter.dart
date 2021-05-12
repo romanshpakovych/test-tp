@@ -75,11 +75,11 @@ class PosePainter extends CustomPainter {
     });
 
     var leftPoints = _poseEntity.landmarks.values
-        .where((element) => Landmark.fromString(element.type).side == 1);
+        .where((element) => Landmark.fromString(element.type).side == LandmarkSide.left);
     var rightPoints = _poseEntity.landmarks.values
-        .where((element) => Landmark.fromString(element.type).side == 0);
+        .where((element) => Landmark.fromString(element.type).side == LandmarkSide.right);
     var middlePoints = _poseEntity.landmarks.values
-        .where((element) => Landmark.fromString(element.type).side == -1);
+        .where((element) => Landmark.fromString(element.type).side == LandmarkSide.middle);
 
     Function drawPoints = (Iterable points, Color color) {
       canvas.drawPoints(

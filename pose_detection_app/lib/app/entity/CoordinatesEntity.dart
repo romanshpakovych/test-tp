@@ -11,12 +11,4 @@ class CoordinatesEntity {
     y = (json['y'] as num).toDouble();
     z = (json['z'] as num).toDouble();
   }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['x'] = this.x;
-    data['y'] = this.y;
-    data['z'] = this.z;
-    return data;
-  }
 }

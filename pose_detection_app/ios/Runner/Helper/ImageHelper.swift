@@ -31,13 +31,6 @@ extension UIImage {
     }
 }
 
-public struct PixelData {
-    var a: UInt8
-    var r: UInt8
-    var g: UInt8
-    var b: UInt8
-}
-
 class ImageHelper {
     
     static func getImage(args: Dictionary<String, Any>) -> UIImage? {
