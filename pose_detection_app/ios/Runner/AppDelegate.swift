@@ -5,53 +5,53 @@ import MLKitVision
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate {
     
-  override func application(
-    _ application: UIApplication,
-    didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
-  ) -> Bool {
-    
-    let controller = window?.rootViewController as! FlutterViewController
-    let platformChannel = FlutterMethodChannel(name: "pose_detection_app/platform_plugin", binaryMessenger: controller.binaryMessenger)
-    
-    platformChannel.setMethodCallHandler({
-        [weak self] (call: FlutterMethodCall, result: @escaping FlutterResult) -> Void in
-        guard call.method == "processFrame" else {
-            result(FlutterMethodNotImplemented)
-            return
-        }
+    override func application(
+        _ application: UIApplication,
+        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
+    ) -> Bool {
         
-        self?.processFrame(result: result, arguments: call.arguments)
-    })
-    GeneratedPluginRegistrant.register(with: self)
-    return super.application(application, didFinishLaunchingWithOptions: launchOptions)
-  }
-    
-    func processFrame(result: @escaping FlutterResult, arguments: Any?){
-        if (arguments == nil) {
-            result("Are you there?")
-        } else {
-            let poseDetectionHelper = PoseDetectionHelper.instance
+        let controller = window?.rootViewController as! FlutterViewController
+        let platformChannel = FlutterMethodChannel(name: "pose_detection_app/platform_plugin", binaryMessenger: controller.binaryMessenger)
+        
+        platformChannel.setMethodCallHandler({
+            [weak self] (call: FlutterMethodCall, flutterResult: @escaping FlutterResult) -> Void in
+            guard call.method == "processFrame" else {
+                flutterResult(FlutterMethodNotImplemented)
+                return
+            }
             
-            let args = arguments as! Dictionary<String, Any>
+            self?.processFrame(arguments: call.arguments) { result in
+                DispatchQueue.main.async {
+                    flutterResult(result)
+                }
+            }
+            
+        })
+        GeneratedPluginRegistrant.register(with: self)
+        return super.application(application, didFinishLaunchingWithOptions: launchOptions)
+    }
+    
+    func processFrame(arguments: Any?, result: @escaping (String?) -> Void){
+        DispatchQueue.global(qos: .background).async {
+            guard let args = arguments as? Dictionary<String, Any> else {
+                result(nil)
+                return
+            }
             let isAccurate = args["isAccurate"] as! Bool
             
-            if (poseDetectionHelper.isAccurate != isAccurate) {
-                poseDetectionHelper.setup(accurate: isAccurate)
+            if (PoseDetectionHelper.instance.isAccurate != isAccurate) {
+                PoseDetectionHelper.instance.setup(accurate: isAccurate)
             }
             
-            DispatchQueue.global(qos: .userInitiated).async {
-                guard let uiimage = ImageHelper.getImage(args: args)
-                else {
-                    DispatchQueue.main.async { result(nil) }
-                    return
-                }
-                
-                let positions = poseDetectionHelper.processVisionImage(uiimage: uiimage)
-                
-                DispatchQueue.main.async {
-                    result(positions)
-                }
+            guard let uiimage = ImageHelper.getImage(args: args)
+            else {
+                result(nil)
+                return
             }
+            
+            let positions = PoseDetectionHelper.instance.processVisionImage(uiimage: uiimage)
+            
+            result(positions)
         }
     }
     
