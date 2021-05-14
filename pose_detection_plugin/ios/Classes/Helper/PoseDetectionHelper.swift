@@ -22,6 +22,7 @@ class PoseDetectionHelper {
     }
     
     func setup(accurate: Bool) {
+        //Choose one and remove unused
         var options: CommonPoseDetectorOptions
         if (accurate) {
             options = AccuratePoseDetectorOptions()

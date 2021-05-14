@@ -12,6 +12,8 @@ dependencies:
   flutter:
     sdk: flutter
 
+  #Add plugin to any project simply added its as separate module and set the path like this
+  #or put it anywhere you prefer and set the path relatively
   pose_detection_plugin:
     path: ../pose_detection_plugin
 

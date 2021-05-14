@@ -25,19 +25,17 @@ class _CameraRouteState extends State<CameraRoute> {
   CameraController controller;
   CameraImage _savedImage;
   PoseEntity pose;
-  bool inProcess = false;
-  var message = "hello";
+  var currentResolution = "480p";
+  var processedFps = "";
+  var inProcess = false;
+  var isAccurate = false;
   var time = 0;
   var frames = 0;
-  var processedFramesCounter = 0;
-  var processedFps = "";
-  var isAccurate = false;
   var camera = 0;
-  var currentResolution = "480p";
+  var processedFramesCounter = 0;
 
   @override
   Widget build(BuildContext context) {
-    "build with: $pose".log();
     return Scaffold(
       appBar: AppBar(
         title: Text("PoseDetectionApp"),
@@ -120,7 +118,6 @@ class _CameraRouteState extends State<CameraRoute> {
                         } else {
                           camera = 0;
                         }
-                        "pressed".log();
                         _initializeCamera();
                       });
                     }),
@@ -166,18 +163,14 @@ class _CameraRouteState extends State<CameraRoute> {
         time = 0;
       }
 
-      /*//Invoke native method by call to registered IOS Chanel
-      String result = await platform.invokeMethod(
-          //that's how we recognise our call from IOS
-          "processFrame",
-          _convertImage(_savedImage)
-            //Add any variables you needs get on IOS side here
-            ..putIfAbsent("isAccurate", () => isAccurate));*/
-
+      //Invoke native method through platform channel
+      //Result is JSON representation of poses
       String result = await PoseDetectionPlugin.processFrame(
           _convertImage(_savedImage)
+            //Add any variables you needs get on IOS side here
             ..putIfAbsent("isAccurate", () => isAccurate));
-
+      debugPrint(result);
+      //Parse result
       try {
         if (result != null) {
           pose = PoseEntity.fromJson(jsonDecode(result)[0])
@@ -186,15 +179,19 @@ class _CameraRouteState extends State<CameraRoute> {
         } else {
           pose = null;
         }
-        setState(() {});
-        ++frames;
-        inProcess = false;
+        setState(() {
+          ++frames;
+          inProcess = false;
+        });
       } catch (e) {
-        e.toString().log();
+        debugPrint(e.toString());
       }
     }
   }
 
+  //Convert image data to map of primitive.
+  //dynamic type is equals to Any on IOS.
+  //Image is extracted in bgra8888 format.
   Map<String, dynamic> _convertImage(CameraImage image) {
     return {
       "width": image.width,

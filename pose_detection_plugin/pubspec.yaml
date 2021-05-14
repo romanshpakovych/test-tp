@@ -3,6 +3,13 @@ description: Pose detection flutter plugin project.
 version: 0.0.1
 author: Sheludchenko Volodymyr
 
+#Add plugin to any project simply added its as separate module and set the path like this
+#or put it anywhere you prefer and set the path relatively
+#
+#dependencies:
+#  pose_detection_plugin:
+#    path: ../pose_detection_plugin
+
 environment:
   sdk: ">=2.7.0 <3.0.0"
   flutter: ">=1.20.0"

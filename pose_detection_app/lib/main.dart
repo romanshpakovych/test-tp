@@ -6,28 +6,15 @@ import 'package:pose_detection_app/app/pose_detection_app.dart';
 
 List<CameraDescription> cameras;
 
-var platform = MethodChannel('pose_detection_app/platform_plugin');
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  //Init cameras
   cameras = await availableCameras();
 
+  //Fix device orientation
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
   runApp(PoseDetectionApp());
-}
-
-//Debugging
-extension LogString on String {
-  void log() {
-    debugPrint("${DateTime
-        .now()
-        .minute}:${DateTime
-        .now()
-        .second}:${DateTime
-        .now()
-        .millisecond}:: $this");
-  }
 }
 
