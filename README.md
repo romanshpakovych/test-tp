@@ -33,9 +33,9 @@ PoseDetectionPlugin.processFrame()
             }
         ]
 
-!!!  "isAccurate" value switch pose detector between 'GoogleMLKit/PoseDetection' and 'GoogleMLKit/PoseDetectionAccurate' libs
-!!!   Project has both for purpose of testing best performance and choosing the best
-!!!
-!!!   You can remove unused lib from pose_detection_plugin/pose_detection_plugin.podspec
-!!!   Don't forget to remove imports and deleted classes out of pose_detection_plugin/Classes/Helper/PoseDetectionHelper.swift
+  "isAccurate" value switch pose detector between 'GoogleMLKit/PoseDetection' and 'GoogleMLKit/PoseDetectionAccurate' libs
+   Project has both for purpose of testing best performance and choosing the best
+
+   You can remove unused lib from pose_detection_plugin/pose_detection_plugin.podspec
+   Don't forget to remove imports and deleted classes out of pose_detection_plugin/Classes/Helper/PoseDetectionHelper.swift
 
