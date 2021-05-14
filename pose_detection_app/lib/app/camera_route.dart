@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:pose_detection_app/app/PosePainter.dart';
 import 'package:pose_detection_app/app/entity/PoseEntity.dart';
 import 'package:pose_detection_app/app/widgets/RoundButton.dart';
+import 'package:pose_detection_plugin/pose_detection_plugin.dart';
 
 import '../main.dart';
 
@@ -165,9 +166,15 @@ class _CameraRouteState extends State<CameraRoute> {
         time = 0;
       }
 
-      //Invoke Plugin native method
+      /*//Invoke native method by call to registered IOS Chanel
       String result = await platform.invokeMethod(
+          //that's how we recognise our call from IOS
           "processFrame",
+          _convertImage(_savedImage)
+            //Add any variables you needs get on IOS side here
+            ..putIfAbsent("isAccurate", () => isAccurate));*/
+
+      String result = await PoseDetectionPlugin.processFrame(
           _convertImage(_savedImage)
             ..putIfAbsent("isAccurate", () => isAccurate));
 

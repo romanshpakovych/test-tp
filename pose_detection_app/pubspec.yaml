@@ -12,10 +12,10 @@ dependencies:
   flutter:
     sdk: flutter
 
-  camera: ^0.7.0+2
-  image: ^2.1.12
+  pose_detection_plugin:
+    path: ../pose_detection_plugin
 
-  ffi: ^0.1.3
+  camera: ^0.7.0+2
   
   cupertino_icons: ^1.0.0
 

@@ -69,14 +69,17 @@ PODS:
     - nanopb/encode (= 2.30908.0)
   - nanopb/decode (2.30908.0)
   - nanopb/encode (2.30908.0)
+  - pose_detection_plugin (0.0.1):
+    - Flutter
+    - GoogleMLKit/PoseDetection
+    - GoogleMLKit/PoseDetectionAccurate
   - PromisesObjC (1.2.12)
   - Protobuf (3.15.8)
 
 DEPENDENCIES:
   - camera (from `.symlinks/plugins/camera/ios`)
   - Flutter (from `Flutter`)
-  - GoogleMLKit/PoseDetection
-  - GoogleMLKit/PoseDetectionAccurate
+  - pose_detection_plugin (from `.symlinks/plugins/pose_detection_plugin/ios`)
 
 SPEC REPOS:
   trunk:
@@ -101,6 +104,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/camera/ios"
   Flutter:
     :path: Flutter
+  pose_detection_plugin:
+    :path: ".symlinks/plugins/pose_detection_plugin/ios"
 
 SPEC CHECKSUMS:
   camera: a0ca5080336f7af47b88436e5e26da3dee5568f0
@@ -118,9 +123,10 @@ SPEC CHECKSUMS:
   MLKitVision: 51385878c9100024478971856510f9271ff555b5
   MLKitXenoCommon: 7c59efa2b957f40acd06c9d6fc28763de1627c9b
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
+  pose_detection_plugin: a52fc027f33dd9b0eca5eb7f77d190fa23eedef1
   PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
   Protobuf: adb85cd18a15bd1a777c158af9fd6e612a0e6d69
 
-PODFILE CHECKSUM: f14a7bbac191202e67c3d93f19d6c2a8c20322a6
+PODFILE CHECKSUM: 6ee0345879a5000de45f53718aa4ac6a11073efb
 
-COCOAPODS: 1.9.3
+COCOAPODS: 1.10.1
